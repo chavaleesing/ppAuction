@@ -1,2 +1,2 @@
-# ppAuction
-application for property auction :)
+# ecommies
+e-commerce application :)
