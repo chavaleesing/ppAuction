@@ -7,4 +7,13 @@ const getAllUser = async (payload) => {
     return aa;
 }
 
-module.exports = getAllUser;
+const createUser = async (payload) => {
+    console.log(payload);
+    logger.info('create user ja');
+    await usersModel.createUser(payload);
+}
+
+module.exports = {
+    getAllUser,
+    createUser
+};
