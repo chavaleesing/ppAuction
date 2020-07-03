@@ -1,7 +1,6 @@
 CREATE TYPE contact_type as enum ('mobile', 'line', 'address', 'facebook', 'instragram');
 CREATE TYPE user_role as enum ('supervisor', 'admin', 'user');
 
-
 CREATE TABLE "users" (
   "id" uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   "username" varchar UNIQUE NOT NULL,
@@ -99,27 +98,15 @@ CREATE TABLE "product_reviews" (
 );
 
 ALTER TABLE "user_contacts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
 ALTER TABLE "procducts_catagories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-
 ALTER TABLE "procducts_catagories" ADD FOREIGN KEY ("catagory_id") REFERENCES "catagories" ("id");
-
 ALTER TABLE "shop_contacts" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
-
 ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-
 ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
-
 ALTER TABLE "users_shops" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
 ALTER TABLE "users_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
-
 ALTER TABLE "shop_reviews" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-
 ALTER TABLE "shop_reviews" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
-
 ALTER TABLE "product_reviews" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-
 ALTER TABLE "product_reviews" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
