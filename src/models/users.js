@@ -1,20 +1,13 @@
-const { Client } = require('pg')
-
-const client = new Client({
-    user: 'postgres',
-    host: '127.0.0.1',
-    database: 'postgres',
-    password: 'postgres',
-    port: 5432,
-})
+const pool = require('./../utils/database');
 
 
-const getUser = async () => {
-    await client.connect();
-    const res = await client.query('SELECT * from users');
-    console.log(res.rows[0]) // Hello world!
-    await client.end()
+const getAllUsers = async () => {
+    const res = await pool().query('SELECT * from users');
+    console.log(res.rows[0])
+    //await pool().end()
     return res
 }
 
-module.exports = {getUser};
+module.exports = {
+    getAllUsers
+};

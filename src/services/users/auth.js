@@ -1,10 +1,10 @@
 const logger = require('../../utils/logger');
 const usersModel = require('../../models/users');
 
-const findUser = async (payload) => {
-    logger.info('get user ja');
-    const aa = await usersModel.getUser();
+const getAllUser = async (payload) => {
+    logger.info('get all user ja');
+    const aa = await usersModel.getAllUsers();
     return aa;
 }
 
-module.exports = findUser;
+module.exports = getAllUser;

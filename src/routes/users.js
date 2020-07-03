@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const findUser = require('./../services/users/auth')
+const getAllUsers = require('./../services/users/auth')
 
-router.get('/:userId', async (req, res) => {
-    const aa = await findUser();
-    res.json({'status': 'get userId OK.', 'data': aa});
+router.get('/all', async (req, res) => {
+    const all = await getAllUsers();
+    res.json({'status': 'get userId OK.', 'data': all});
+})
+
+router.post('/register', async (req, res) => {
+    res.json({'status': 'Create user successful'});
 })
 
 module.exports = router;
