@@ -8,9 +8,13 @@ const client = new Client({
     port: 5432,
 })
 
-client.connect()
 
-client.query('SELECT NOW()', (err, res) => {
-    console.log(err, res)
-    client.end()
-})
+const getUser = async () => {
+    await client.connect();
+    const res = await client.query('SELECT * from users');
+    console.log(res.rows[0]) // Hello world!
+    await client.end()
+    return res
+}
+
+module.exports = {getUser};
