@@ -19,7 +19,7 @@ const createUser = async (payload) => {
 const login = async (payload) => {
     logger.info('login ja');
     user = await usersModel.getUserByUsername(payload.username)
-    if(user.password == payload.password){
+    if(user && user.password == payload.password){
         token = jwt.sign(payload, 'SecretKey')
         expires = new Date(Date.now() + 86400000).toISOString();
         await usersModel.createToken(token, expires, user.id)
@@ -29,9 +29,15 @@ const login = async (payload) => {
     }
 }
 
+const logout = async (payload) => {
+    logger.info('logout ja');
+    await usersModel.removeToken(payload.authorization)
+}
+
 
 module.exports = {
     getAllUsers,
     createUser,
-    login
+    login,
+    logout
 };
