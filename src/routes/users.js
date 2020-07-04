@@ -8,8 +8,17 @@ router.get('/all', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    const all = await auth.createUser(req.body);
+    await auth.createUser(req.body);
     res.json({'status': 'Create user successful'});
+})
+
+router.post('/login', async (req, res) => {
+    username = await auth.login(req.body);
+    if (username){
+        res.json({'status': 'Login successful'});
+    } else {
+        res.json({'status': 'Login failed'});
+    }
 })
 
 module.exports = router;

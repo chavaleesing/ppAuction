@@ -1,5 +1,6 @@
-CREATE TYPE contact_type as enum ('mobile', 'line', 'address', 'facebook', 'instragram');
-CREATE TYPE user_role as enum ('supervisor', 'admin', 'user');
+CREATE TYPE contact_type as enum ('MOBILE', 'LINE', 'ADDRESS', 'FACEBOOK', 'INSTRTAGRAM');
+CREATE TYPE user_role as enum ('SUPERVISOR', 'ADMIN', 'USER');
+CREATE TYPE token_status as enum ('ACTIVE', 'EXPIRED');
 
 CREATE TABLE "users" (
   "id" uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -89,10 +90,21 @@ CREATE TABLE "shop_reviews" (
 
 CREATE TABLE "product_reviews" (
   "id" uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-  "product_id" uuid,
+  "product_id" uuid NOT NULL,
   "review" varchar,
   "rate" float NOT NULL,
-  "user_id" uuid,
+  "user_id" uuid NOT NULL,
+  "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
+  "updated_at" timestamp WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE "access_token" (
+  "id" uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+  "token" varchar UNIQUE NOT NULL,
+  "refresh_token" varchar UNIQUE NOT NULL,
+  "expires" timestamp NOT NULL,
+  "status" token_status NOT NULL,
+  "user_id" uuid NOT NULL,
   "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
   "updated_at" timestamp WITH TIME ZONE DEFAULT NOW()
 );
@@ -110,3 +122,21 @@ ALTER TABLE "shop_reviews" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
 ALTER TABLE "shop_reviews" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
 ALTER TABLE "product_reviews" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 ALTER TABLE "product_reviews" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "access_token" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+
+
+/*
+  DROP TABLE IF EXISTS users CASCADE ;
+  DROP TABLE IF EXISTS user_contacts CASCADE ;
+  DROP TABLE IF EXISTS products CASCADE ;
+  DROP TABLE IF EXISTS procducts_catagories CASCADE ;
+  DROP TABLE IF EXISTS catagories CASCADE ;
+  DROP TABLE IF EXISTS shops CASCADE ;
+  DROP TABLE IF EXISTS shop_contacts CASCADE ;
+  DROP TABLE IF EXISTS procducts_shops CASCADE ;
+  DROP TABLE IF EXISTS users_shops CASCADE ;
+  DROP TABLE IF EXISTS shop_reviews CASCADE ;
+  DROP TABLE IF EXISTS product_reviews CASCADE ;
+  DROP TABLE IF EXISTS access_token CASCADE ;
+*/

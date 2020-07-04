@@ -19,6 +19,7 @@
   "homepage": "https://github.com/chavaleesing/ecommies#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.2.1",
     "winston": "^3.3.3"
   },
