@@ -8,16 +8,20 @@ router.get('/all', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-    await auth.createUser(req.body);
-    res.json({'status': 'Create user successful'});
+    try {
+        await auth.createUser(req.body);
+        res.json({'status': 'Create user successful'});
+    } catch (error) {
+        res.status(400).json({'status': 'Create user failed', 'error': error.message});
+    }
 })
 
 router.post('/login', async (req, res) => {
-    username = await auth.login(req.body);
-    if (username){
+    try {
+        username = await auth.login(req.body);
         res.json({'status': 'Login successful'});
-    } else {
-        res.json({'status': 'Login failed'});
+    } catch (error) {
+        res.status(400).json({'status': 'Login failed', 'error': error.message});
     }
 })
 

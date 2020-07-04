@@ -19,6 +19,7 @@ const createUser = async (payload) => {
         await pool().query(query);
     } catch (error) {
         logger.error(`error ${error}`);
+        throw Error(error);
     }
 }
 

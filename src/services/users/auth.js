@@ -1,8 +1,20 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const Joi = require('@hapi/joi');
 
 const logger = require('../../utils/logger');
 const usersModel = require('../../models/users');
 
+
+const newUserSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required()
+})
+
+const loginSchema = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required()
+})
 
 const getAllUsers = async (payload) => {
     logger.info('get all user ja');
@@ -13,11 +25,18 @@ const getAllUsers = async (payload) => {
 const createUser = async (payload) => {
     console.log(payload);
     logger.info('create user ja');
+    const newUser = newUserSchema.validate(payload)
+    if(newUser.error){
+        throw Error(newUser.error.message);
+    }
     await usersModel.createUser(payload);
 }
 
 const login = async (payload) => {
     logger.info('login ja');
+    loginValidate = loginSchema.validate(payload);
+    if(loginValidate.error)
+        throw Error(loginValidate.error.message);
     user = await usersModel.getUserByUsername(payload.username)
     if(user && user.password == payload.password){
         token = jwt.sign(payload, 'SecretKey')
@@ -26,7 +45,7 @@ const login = async (payload) => {
         await usersModel.createToken(token, refresh_token, expires, user.id)
         return user.username
     } else {
-        return null
+        throw Error("Incorrect username or password");
     }
 }
 
