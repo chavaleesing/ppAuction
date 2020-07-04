@@ -33,10 +33,10 @@ const getUserByUsername = async (username) => {
     }
 }
 
-const createToken = async (token, expires, user_id) => {
+const createToken = async (token, refresh_token, expires, user_id) => {
     try {
         const query = `INSERT INTO access_token (token, refresh_token, expires, status, user_id)
-                    VALUES ('${token}', '${token}', '${expires}', 'ACTIVE', '${user_id}')`;
+                    VALUES ('${token}', '${refresh_token}', '${expires}', 'ACTIVE', '${user_id}')`;
         await pool().query(query);
     } catch (error) {
         logger.error(`error ${error}`);

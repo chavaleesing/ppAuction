@@ -21,8 +21,9 @@ const login = async (payload) => {
     user = await usersModel.getUserByUsername(payload.username)
     if(user && user.password == payload.password){
         token = jwt.sign(payload, 'SecretKey')
+        refresh_token = jwt.sign(payload, 'SecretKey2')
         expires = new Date(Date.now() + 86400000).toISOString();
-        await usersModel.createToken(token, expires, user.id)
+        await usersModel.createToken(token, refresh_token, expires, user.id)
         return user.username
     } else {
         return null
