@@ -54,10 +54,15 @@ const logout = async (payload) => {
     await usersModel.removeToken(payload.authorization)
 }
 
+const getUserByToken = async (payload) => {
+    // mock for test
+    return "fc94c78e-44b1-4e81-b188-04889f667cfa";
+}
 
 module.exports = {
     getAllUsers,
     createUser,
     login,
-    logout
+    logout,
+    getUserByToken
 };
