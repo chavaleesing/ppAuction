@@ -2,7 +2,7 @@ const pool = require('./../utils/database');
 const logger = require('./../utils/logger')
 
 
-const getAllUsers = async () => {
+const findAllUsers = async () => {
     try {
         const res = await pool().query('SELECT * from users');
         console.log(res.rows[0])
@@ -23,9 +23,20 @@ const createUser = async (payload) => {
     }
 }
 
-const getUserByUsername = async (username) => {
+const findUserByUsername = async (username) => {
     try {
-        const query = `SELECT * from users WHERE username = '${username}'`;
+        const query = `SELECT * FROM users WHERE username = '${username}'`;
+        const res = await pool().query(query);
+        console.log(res.rows[0])
+        return res.rows[0]  
+    } catch (error) {
+        return null
+    }
+}
+
+const findUserByToken = async (token) => {
+    try {
+        const query = `SELECT * FROM users WHERE id = (SELECT user_id FROM access_token WHERE token = '${token}')`;
         const res = await pool().query(query);
         console.log(res.rows[0])
         return res.rows[0]  
@@ -54,9 +65,10 @@ const removeToken = async (token) => {
 }
 
 module.exports = {
-    getAllUsers,
+    findAllUsers,
     createUser,
-    getUserByUsername,
+    findUserByUsername,
+    findUserByToken,
     createToken,
     removeToken
 };
