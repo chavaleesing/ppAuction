@@ -11,7 +11,13 @@ const findProduct = async (payload, user) => {
 const addProduct = async (payload, user) => {
     logger.info('addProduct ja');
     payload.user_id = user.userId
-    return await productsModel.addProduct(payload)
+    const result = await productsModel.addProduct(payload)
+    if(payload.category_id){
+        payload.product_id = result.id
+        await productsModel.addProductCategory(payload)
+        result.category_id = payload.category_id
+    }
+    return result
 }
 
 const removeProduct = async (payload, user) => {

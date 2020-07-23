@@ -62,10 +62,23 @@ const updateProduct = async (payload) => {
     }
 }
 
+const addProductCategory = async (payload) => {
+    try {
+        const query = `INSERT INTO products_categories (product_id, category_id)
+                    VALUES ('${payload.product_id}', '${payload.category_id}') RETURNING *`;
+        const result = await pool().query(query);
+        return result.rows[0];
+    } catch (error) {
+        logger.error(`error ${error}`);
+        throw Error(error);
+    }
+}
+
 module.exports = {
     findProduct,
     findUserIdByProductIds,
     addProduct,
     removeProduct,
-    updateProduct
+    updateProduct,
+    addProductCategory
 };
