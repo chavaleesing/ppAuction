@@ -37,11 +37,11 @@ CREATE TABLE "categories" (
   "updated_at" timestamp WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE TABLE "procducts_categories" (
+CREATE TABLE "products_categories" (
   "product_id" uuid NOT NULL,
-  "catagory_id" uuid NOT NULL,
+  "category_id" uuid NOT NULL,
   "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE ("product_id", "catagory_id")
+  UNIQUE ("product_id", "category_id")
 );
 
 CREATE TABLE "shops" (
@@ -62,7 +62,7 @@ CREATE TABLE "shop_contacts" (
   "updated_at" timestamp WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE TABLE "procducts_shops" (
+CREATE TABLE "products_shops" (
   "product_id" uuid NOT NULL,
   "shop_id" uuid NOT NULL,
   "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
@@ -111,11 +111,11 @@ CREATE TABLE "access_token" (
 
 ALTER TABLE "user_contacts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-ALTER TABLE "procducts_categories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-ALTER TABLE "procducts_categories" ADD FOREIGN KEY ("catagory_id") REFERENCES "categories" ("id");
+ALTER TABLE "products_categories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "products_categories" ADD FOREIGN KEY ("category_id") REFERENCES "categories" ("id");
 ALTER TABLE "shop_contacts" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
-ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
+ALTER TABLE "products_shops" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "products_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
 ALTER TABLE "users_shops" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "users_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
 ALTER TABLE "shop_reviews" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
@@ -130,11 +130,11 @@ ALTER TABLE "access_token" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
   DROP TABLE IF EXISTS users CASCADE ;
   DROP TABLE IF EXISTS user_contacts CASCADE ;
   DROP TABLE IF EXISTS products CASCADE ;
-  DROP TABLE IF EXISTS procducts_categories CASCADE ;
+  DROP TABLE IF EXISTS products_categories CASCADE ;
   DROP TABLE IF EXISTS categories CASCADE ;
   DROP TABLE IF EXISTS shops CASCADE ;
   DROP TABLE IF EXISTS shop_contacts CASCADE ;
-  DROP TABLE IF EXISTS procducts_shops CASCADE ;
+  DROP TABLE IF EXISTS products_shops CASCADE ;
   DROP TABLE IF EXISTS users_shops CASCADE ;
   DROP TABLE IF EXISTS shop_reviews CASCADE ;
   DROP TABLE IF EXISTS product_reviews CASCADE ;
