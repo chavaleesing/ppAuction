@@ -39,9 +39,10 @@ const login = async (payload) => {
         throw Error(loginValidate.error.message);
     const user = await usersModel.findUserByUsername(payload.username)
     if(user && user.password == payload.password){
-        const token = genAccessToken(user)
-        const refresh_token = jwt.sign(payload, 'SecretKey2')
-        const expires = new Date(Date.now() + 86400000).toISOString();
+        const exp_second = 86400000
+        const token = await genAccessToken(user, exp_second)
+        const refresh_token = token // temporary use refresh_token
+        const expires = new Date(Date.now() + exp_second).toISOString();
         await usersModel.createToken(token, refresh_token, expires, user.id)
         return token
     } else {
@@ -59,12 +60,12 @@ const getUserByToken = async (payload) => {
     return user;
 }
 
-const genAccessToken = async (user) => {
-    const JWT_SECRET_KEY = 'superrrrSecret';
+const genAccessToken = async (user, exp_second) => {
+    const JWT_SECRET_KEY = 'test';
     const userId = user.id;
     const username = user.username
     const tokenPayload = { userId, username };
-    const accessToken = jwt.sign(tokenPayload, JWT_SECRET_KEY);
+    const accessToken = jwt.sign(tokenPayload, JWT_SECRET_KEY, {expiresIn: exp_second + 's'});
     return accessToken;
 }
 
