@@ -22,10 +22,10 @@ router.post('/add', authMiddleware.tokenValidation, async (req, res) => {
 
 router.post('/remove', authMiddleware.tokenValidation, async (req, res) => {
     try {
-        await productsService.addProduct(req.body);
-        res.json({'status': 'Add product successful'});
+        await productsService.removeProduct(req.body, res.locals.user);
+        res.json({'status': 'remove Product successful'});
     } catch (error) {
-        res.status(400).json({'status': 'Add product failed', 'error': error.message});
+        res.status(400).json({'status': 'remove Product failed', 'error': error.message});
     }
 })
 

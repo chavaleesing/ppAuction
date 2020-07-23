@@ -13,7 +13,18 @@ const addProduct = async (payload) => {
     }
 }
 
+const removeProduct = async (payload) => {
+    try {
+        const query = "DELETE FROM products WHERE id = ANY ($1)"
+        await pool().query(query, [payload.id]);
+    } catch (error) {
+        logger.error(`error ${error}`);
+        throw Error(error);
+    }
+}
+
 
 module.exports = {
-    addProduct
+    addProduct,
+    removeProduct
 };

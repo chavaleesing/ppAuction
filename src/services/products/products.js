@@ -1,18 +1,22 @@
-const Joi = require('@hapi/joi');
-
 const logger = require('../../utils/logger');
 const productsModel = require('../../models/products');
-const authService = require('../../services/users/auth')
 
 
 const addProduct = async (payload, user) => {
     logger.info('addProduct ja');
-    //const user_id = await authService.getUserByToken(payload)
     payload.user_id = user.userId
     await productsModel.addProduct(payload)
 }
 
+const removeProduct = async (payload, user) => {
+    logger.info('removeProduct ja');
+
+    payload.user_id = user.userId
+    await productsModel.removeProduct(payload)
+}
+
 
 module.exports = {
-    addProduct
+    addProduct,
+    removeProduct
 };
