@@ -34,16 +34,16 @@ const createUser = async (payload) => {
 
 const login = async (payload) => {
     logger.info('login ja');
-    loginValidate = loginSchema.validate(payload);
+    const loginValidate = loginSchema.validate(payload);
     if(loginValidate.error)
         throw Error(loginValidate.error.message);
-    user = await usersModel.getUserByUsername(payload.username)
+    const user = await usersModel.findUserByUsername(payload.username)
     if(user && user.password == payload.password){
-        token = jwt.sign(payload, 'SecretKey')
-        refresh_token = jwt.sign(payload, 'SecretKey2')
-        expires = new Date(Date.now() + 86400000).toISOString();
+        const token = genAccessToken(user)
+        const refresh_token = jwt.sign(payload, 'SecretKey2')
+        const expires = new Date(Date.now() + 86400000).toISOString();
         await usersModel.createToken(token, refresh_token, expires, user.id)
-        return user.username
+        return token
     } else {
         throw Error("Incorrect username or password");
     }
@@ -55,14 +55,25 @@ const logout = async (payload) => {
 }
 
 const getUserByToken = async (payload) => {
-    // mock for test
-    return "fc94c78e-44b1-4e81-b188-04889f667cfa";
+    const user = await usersModel.findUserByUsername(payload.username)
+    return user;
 }
+
+const genAccessToken = async (user) => {
+    const JWT_SECRET_KEY = 'superrrrSecret';
+    const userId = user.id;
+    const username = user.username
+    const tokenPayload = { userId, username };
+    const accessToken = jwt.sign(tokenPayload, JWT_SECRET_KEY);
+    return accessToken;
+}
+
 
 module.exports = {
     getAllUsers,
     createUser,
     login,
     logout,
-    getUserByToken
+    getUserByToken,
+    genAccessToken
 };
