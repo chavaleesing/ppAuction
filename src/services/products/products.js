@@ -5,10 +5,10 @@ const productsModel = require('../../models/products');
 const authService = require('../../services/users/auth')
 
 
-const addProduct = async (payload) => {
+const addProduct = async (payload, user) => {
     logger.info('addProduct ja');
-    const user_id = await authService.getUserByToken(payload)
-    payload.user_id = user_id
+    //const user_id = await authService.getUserByToken(payload)
+    payload.user_id = user.userId
     await productsModel.addProduct(payload)
 }
 
