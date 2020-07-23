@@ -15,7 +15,12 @@ const findProduct = async (payload) => {
 
 const findUserIdByProductIds = async (payload) => {
     try {
-        const query = `SELECT DISTINCT user_id FROM products WHERE id = ANY ($1)`;
+        let query;
+        if(Array.isArray(payload.id)){
+            query = `SELECT DISTINCT user_id FROM products WHERE id = ANY ($1)`;
+        } else {
+            query = `SELECT DISTINCT user_id FROM products WHERE id = $1`;
+        }
         const result = await pool().query(query, [payload.id]);
         return result.rows[0]
     } catch (error) {

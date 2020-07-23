@@ -26,6 +26,10 @@ const removeProduct = async (payload, user) => {
 
 const updateProduct = async (payload, user) => {
     logger.info('updateProduct ja');
+    user_product = await productsModel.findUserIdByProductIds(payload)
+    if(user_product.user_id !== user.userId){
+        throw Error("You not allow to update this selected product");
+    }
     payload.user_id = user.userId
     await productsModel.updateProduct(payload)
 }
