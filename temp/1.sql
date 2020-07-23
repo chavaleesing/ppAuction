@@ -30,14 +30,14 @@ CREATE TABLE "products" (
   "user_id" uuid NOT NULL
 );
 
-CREATE TABLE "catagories" (
+CREATE TABLE "categories" (
   "id" uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   "name" varchar UNIQUE NOT NULL,
   "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
   "updated_at" timestamp WITH TIME ZONE DEFAULT NOW()
 );
 
-CREATE TABLE "procducts_catagories" (
+CREATE TABLE "procducts_categories" (
   "product_id" uuid NOT NULL,
   "catagory_id" uuid NOT NULL,
   "created_at" timestamp WITH TIME ZONE DEFAULT NOW(),
@@ -111,8 +111,8 @@ CREATE TABLE "access_token" (
 
 ALTER TABLE "user_contacts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 ALTER TABLE "products" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
-ALTER TABLE "procducts_catagories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
-ALTER TABLE "procducts_catagories" ADD FOREIGN KEY ("catagory_id") REFERENCES "catagories" ("id");
+ALTER TABLE "procducts_categories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
+ALTER TABLE "procducts_categories" ADD FOREIGN KEY ("catagory_id") REFERENCES "categories" ("id");
 ALTER TABLE "shop_contacts" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
 ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 ALTER TABLE "procducts_shops" ADD FOREIGN KEY ("shop_id") REFERENCES "shops" ("id");
@@ -130,8 +130,8 @@ ALTER TABLE "access_token" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
   DROP TABLE IF EXISTS users CASCADE ;
   DROP TABLE IF EXISTS user_contacts CASCADE ;
   DROP TABLE IF EXISTS products CASCADE ;
-  DROP TABLE IF EXISTS procducts_catagories CASCADE ;
-  DROP TABLE IF EXISTS catagories CASCADE ;
+  DROP TABLE IF EXISTS procducts_categories CASCADE ;
+  DROP TABLE IF EXISTS categories CASCADE ;
   DROP TABLE IF EXISTS shops CASCADE ;
   DROP TABLE IF EXISTS shop_contacts CASCADE ;
   DROP TABLE IF EXISTS procducts_shops CASCADE ;
