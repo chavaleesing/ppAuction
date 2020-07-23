@@ -11,7 +11,7 @@ const findProduct = async (payload, user) => {
 const addProduct = async (payload, user) => {
     logger.info('addProduct ja');
     payload.user_id = user.userId
-    await productsModel.addProduct(payload)
+    return await productsModel.addProduct(payload)
 }
 
 const removeProduct = async (payload, user) => {
@@ -31,7 +31,7 @@ const updateProduct = async (payload, user) => {
         throw Error("You not allow to update this selected product");
     }
     payload.user_id = user.userId
-    await productsModel.updateProduct(payload)
+    return await productsModel.updateProduct(payload)
 }
 
 module.exports = {

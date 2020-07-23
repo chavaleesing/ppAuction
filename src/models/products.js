@@ -22,7 +22,7 @@ const findUserIdByProductIds = async (payload) => {
             query = `SELECT DISTINCT user_id FROM products WHERE id = $1`;
         }
         const result = await pool().query(query, [payload.id]);
-        return result.rows[0]
+        return result.rows[0];
     } catch (error) {
         logger.error(`error ${error}`);
         throw Error(error);
@@ -32,8 +32,9 @@ const findUserIdByProductIds = async (payload) => {
 const addProduct = async (payload) => {
     try {
         const query = `INSERT INTO products (name, description, price, user_id)
-                    VALUES ('${payload.name}', '${payload.description}', '${payload.price}', '${payload.user_id}')`;
-        await pool().query(query);
+                    VALUES ('${payload.name}', '${payload.description}', '${payload.price}', '${payload.user_id}') RETURNING *`;
+        const result = await pool().query(query);
+        return result.rows[0];
     } catch (error) {
         logger.error(`error ${error}`);
         throw Error(error);
@@ -52,8 +53,9 @@ const removeProduct = async (payload) => {
 
 const updateProduct = async (payload) => {
     try {
-        const query = "UPDATE products SET name = $1, description = $2, price = $3 WHERE id = $4"
-        await pool().query(query, [payload.name, payload.description, payload.price, payload.id]);
+        const query = "UPDATE products SET name = $1, description = $2, price = $3 WHERE id = $4 RETURNING *";
+        const result = await pool().query(query, [payload.name, payload.description, payload.price, payload.id]);
+        return result.rows[0];
     } catch (error) {
         logger.error(`error ${error}`);
         throw Error(error);
