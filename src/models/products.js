@@ -13,6 +13,17 @@ const findProduct = async (payload) => {
     }
 }
 
+const findAllProducts = async (payload) => {
+    try {
+        const query = `SELECT * FROM products`;
+        const result = await pool().query(query);
+        return result.rows
+    } catch (error) {
+        logger.error(`error ${error}`);
+        throw Error(error);
+    }
+}
+
 const findUserIdByProductIds = async (payload) => {
     try {
         let query;
@@ -23,6 +34,29 @@ const findUserIdByProductIds = async (payload) => {
         }
         const result = await pool().query(query, [payload.id]);
         return result.rows[0];
+    } catch (error) {
+        logger.error(`error ${error}`);
+        throw Error(error);
+    }
+}
+
+const findProductsByCategoryId = async (payload) => {
+    try {
+        const query = `select * from products where id in 
+        (select product_id from products_categories where category_id = '${payload.category_id}')`
+        const result = await pool().query(query);
+        return result.rows;
+    } catch (error) {
+        logger.error(`error ${error}`);
+        throw Error(error);
+    }
+}
+
+const findProductsByUserId = async (payload) => {
+    try {
+        const query = `select * from products where user_id = '${payload.user_id}'`
+        const result = await pool().query(query);
+        return result.rows;
     } catch (error) {
         logger.error(`error ${error}`);
         throw Error(error);
@@ -74,9 +108,14 @@ const addProductCategory = async (payload) => {
     }
 }
 
+
+
 module.exports = {
     findProduct,
+    findAllProducts,
     findUserIdByProductIds,
+    findProductsByCategoryId,
+    findProductsByUserId,
     addProduct,
     removeProduct,
     updateProduct,

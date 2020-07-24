@@ -8,6 +8,21 @@ const findProduct = async (payload, user) => {
     return result
 }
 
+const findAllProducts = async (payload, user) => {
+    const result = await productsModel.findAllProduct(payload)
+    return result
+}
+
+const findProductsByCategoryId = async (payload, user) => {
+    const result = await productsModel.findProductsByCategoryId(payload)
+    return result
+}
+
+const findProductsByUserId = async (payload, user) => {
+    const result = await productsModel.findProductsByUserId(payload)
+    return result
+}
+
 const addProduct = async (payload, user) => {
     logger.info('addProduct ja');
     payload.user_id = user.userId
@@ -42,6 +57,9 @@ const updateProduct = async (payload, user) => {
 
 module.exports = {
     findProduct,
+    findAllProducts,
+    findProductsByCategoryId,
+    findProductsByUserId,
     addProduct,
     removeProduct,
     updateProduct

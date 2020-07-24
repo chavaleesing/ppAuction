@@ -8,7 +8,34 @@ router.get('/:productId', authMiddleware.tokenValidation, async (req, res) => {
         const result = await productsService.findProduct(req.params, res.locals.user);
         res.json({'data': result, 'status': 'Find product successful'});
     } catch (error) {
-        res.status(400).json({'status': 'Add product failed', 'error': error.message});
+        res.status(400).json({'status': 'failed', 'error': error.message});
+    }
+})
+
+router.get('/all', authMiddleware.tokenValidation, async (req, res) => {
+    try {
+        const result = await productsService.findAllProduct(req.params, res.locals.user);
+        res.json({'data': result, 'status': 'Get all product successful'});
+    } catch (error) {
+        res.status(400).json({'status': 'failed', 'error': error.message});
+    }
+})
+
+router.get('/category_id/:category_id', authMiddleware.tokenValidation, async (req, res) => {
+    try {
+        const result = await productsService.findProductsByCategoryId(req.params, res.locals.user);
+        res.json({'data': result, 'status': 'Find product by category_id successful'});
+    } catch (error) {
+        res.status(400).json({'status': 'failed', 'error': error.message});
+    }
+})
+
+router.get('/user_id/:user_id', authMiddleware.tokenValidation, async (req, res) => {
+    try {
+        const result = await productsService.findProductsByUserId(req.params, res.locals.user);
+        res.json({'data': result, 'status': 'Find product by user_id successful'});
+    } catch (error) {
+        res.status(400).json({'status': 'failed', 'error': error.message});
     }
 })
 
